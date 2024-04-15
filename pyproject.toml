@@ -1,0 +1,22 @@
+[project]
+name = "koishi-python"
+version = "0.1.0"
+description = "Run Koishi in python"
+authors = [
+    {name = "rf_tar_railt", email = "rf_tar_railt@qq.com"},
+]
+dependencies = [
+    "javascript @ git+https://github.com/koishipy/JSPyBridge@ref_val",
+    "typing-extensions>=4.7.0",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
