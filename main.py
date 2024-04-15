@@ -1,4 +1,8 @@
 import asyncio
+from koishi_python import init
+
+init()
+
 from koishi_python import Context, plugin_require, plugins_require
 
 console = plugins_require("@koishijs/plugin-console")
