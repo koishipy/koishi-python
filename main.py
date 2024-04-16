@@ -15,7 +15,11 @@ def test(x: Context, *_):
 
 
 ctx.plugin({"apply": test})
-# ctx.command("天王盖地虎").action(lambda *args: "宝塔镇河妖")
+ctx.command('echo1 <message:text> 输出收到的信息')\
+  .option('timeout', '-t <seconds> 设定延迟发送的时间')\
+  .usage('注意：参数请写在最前面，不然会被当成 message 的一部分！')\
+  .example('echo -t 300 Hello World  五分钟后发送 Hello World')\
+  .action(lambda cmd, _, *args: args[-1])
 
 
 async def main():

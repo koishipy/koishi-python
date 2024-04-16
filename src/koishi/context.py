@@ -1,6 +1,7 @@
 import asyncio
 from typing import TypedDict, overload, Protocol, Optional, Union, TypeVar, Callable, Any, Literal
 from typing_extensions import TypeAlias
+from .command import Command, CommandConfig
 
 import javascript
 
@@ -120,6 +121,9 @@ class Context:
 
     def emit(self, name: str, *args: Any):
         return self._obj.emit(name, *args)
+
+    def command(self, cmd: str, config: Optional[CommandConfig] = None, /) -> Command:
+        return self._obj.command(cmd, config)
 
     def start(self):
         loop = asyncio.get_running_loop()
