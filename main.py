@@ -1,25 +1,14 @@
 import asyncio
-from koishi_python import init
+from koishi import ctx, Context, Session
 
-init()
-
-from koishi_python import Context, plugin_require, plugins_require
-
-console = plugins_require("@koishijs/plugin-console")
-sandbox = plugin_require("@koishijs/plugin-sandbox")
-echo = plugin_require("@koishijs/plugin-echo")
-server = plugins_require('@koishijs/plugin-server')
-
-
-ctx = Context()
-ctx.plugin(console["default"])
-ctx.plugin(sandbox)
-ctx.plugin(echo)
-ctx.plugin(server["default"], {"port": 5140})
+console = ctx.require("@koishijs/plugin-console")
+sandbox = ctx.require("@koishijs/plugin-sandbox")
+echo = ctx.require("@koishijs/plugin-echo")
+server = ctx.require('@koishijs/plugin-server', {"port": 5140})
 
 
 def test(x: Context, *_):
-    def handle(session, *args):
+    def handle(session: Session, *args):
         if session.content == "天王盖地虎":
             session.send("宝塔镇河妖")
     x.on("message", handle)
@@ -30,9 +19,6 @@ ctx.plugin({"apply": test})
 
 
 async def main():
-    ctx.start()
-    while True:
-        await asyncio.sleep(0.1)
-
+    await ctx.start()
 
 asyncio.run(main())
