@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:e209b9c75cd589c4f69fac9836d583d52443a944ac1c99e7553a4d8239304d5d"
+content_hash = "sha256:807ed309a238cace029125e1bd878c3f84a9354a7793974ccfe391f834e0a0ba"
 
 [[package]]
 name = "colorama"
@@ -22,10 +22,10 @@ files = [
 [[package]]
 name = "javascript"
 version = "1!1.1.3"
-requires_python = "<4,>=3.7"
+requires_python = ">=3.7, <4"
 git = "https://github.com/koishipy/JSPyBridge"
 ref = "ref_val"
-revision = "6d67f651a482cbb541cc6cdf2b437d12ed1de272"
+revision = "43076ca7c948fb358c03cbdcc8de3766ee7e9390"
 summary = "Call and interop Node.js APIs with Python"
 groups = ["default"]
 dependencies = [

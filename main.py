@@ -1,10 +1,15 @@
-import asyncio
 from koishi import ctx, Context, Session
 
-console = ctx.require("@koishijs/plugin-console")
-sandbox = ctx.require("@koishijs/plugin-sandbox")
-echo = ctx.require("@koishijs/plugin-echo")
-server = ctx.require('@koishijs/plugin-server', {"port": 5140})
+ctx.requires(
+    "@koishijs/plugin-console",
+    "@koishijs/plugin-sandbox",
+    "@koishijs/plugin-echo",
+    "@koishijs/plugin-help",
+    "@koishijs/plugin-server",
+    config={
+        "@koishijs/plugin-server": {"port": 5140},
+    },
+)
 
 
 def test(x: Context, *_):
@@ -15,14 +20,17 @@ def test(x: Context, *_):
 
 
 ctx.plugin({"apply": test})
-ctx.command('echo1 <message:text> 输出收到的信息')\
+ctx.command('echo1 <message:text>', '输出收到的信息', {"checkArgCount": True})\
   .option('timeout', '-t <seconds> 设定延迟发送的时间')\
   .usage('注意：参数请写在最前面，不然会被当成 message 的一部分！')\
   .example('echo -t 300 Hello World  五分钟后发送 Hello World')\
-  .action(lambda cmd, _, *args: args[-1])
+  .action(lambda cmd, _, *args: args[0])
+
+ctx.command('test')\
+  .option('alpha', '-a')\
+  .option('beta', '-b [beta]')\
+  .option('gamma', '-c <gamma>')\
+  .action(lambda cmd, argv, *args: str(argv.get("options")))
 
 
-async def main():
-    await ctx.start()
-
-asyncio.run(main())
+ctx.run()

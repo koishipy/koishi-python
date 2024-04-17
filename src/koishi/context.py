@@ -1,5 +1,7 @@
 import asyncio
 from typing import TypedDict, overload, Protocol, Optional, Union, TypeVar, Callable, Any, Literal
+
+from loguru import logger
 from typing_extensions import TypeAlias
 from .command import Command, CommandConfig
 
@@ -96,6 +98,10 @@ class Context:
         else:
             self._obj.plugin(plugin, config)
 
+    def requires(self, *names: str, config: Optional[dict[str, dict[str, Any]]] = None):
+        for name in names:
+            self.require(name, config.get(name) if config else None)
+
     def plugin(self, plugin: PluginType, config: Optional[T] = None):
         if isinstance(plugin, dict):
             self._obj.plugin(plugin)
@@ -122,18 +128,61 @@ class Context:
     def emit(self, name: str, *args: Any):
         return self._obj.emit(name, *args)
 
-    def command(self, cmd: str, config: Optional[CommandConfig] = None, /) -> Command:
-        return self._obj.command(cmd, config)
+    @overload
+    def command(self, cmd: str, config: Optional[CommandConfig] = None, /) -> Command: ...
+    @overload
+    def command(self, cmd: str, desc: str, config: Optional[CommandConfig] = None, /) -> Command: ...
+
+    def command(self, cmd: str, *args):
+        return self._obj.command(cmd, *args)
 
     def start(self):
-        loop = asyncio.get_running_loop()
-
-        async def _task():
-            self._obj.start()
-            while True:
-                await asyncio.sleep(0.01)
-
-        return loop.create_task(_task(), name="Koishi-Daemon")
+        self._obj.start()
 
     def stop(self):
         self._obj.stop()
+
+    async def daemon(self):
+        self.start()
+        while True:
+            await asyncio.sleep(0.1)
+
+    async def quit(self):
+        self.stop()
+
+    async def _main(self):
+        await self.daemon()
+        await self.quit()
+
+    def run(self):
+        loop = asyncio.events.new_event_loop()
+        try:
+            asyncio.events.set_event_loop(loop)
+            return loop.run_until_complete(self._main())
+        except KeyboardInterrupt:
+            logger.warning("Interrupt detected, stopping ...")
+        finally:
+            try:
+                to_cancel = asyncio.tasks.all_tasks(loop)
+                if not to_cancel:
+                    return
+
+                for task in to_cancel:
+                    task.cancel()
+
+                loop.run_until_complete(asyncio.gather(*to_cancel, loop=loop, return_exceptions=True))
+
+                for task in to_cancel:
+                    if task.cancelled():
+                        continue
+                    if task.exception() is not None:
+                        loop.call_exception_handler({
+                            'message': 'unhandled exception during asyncio.run() shutdown',
+                            'exception': task.exception(),
+                            'task': task,
+                        })
+                loop.run_until_complete(loop.shutdown_asyncgens())
+                loop.run_until_complete(loop.shutdown_default_executor())
+            finally:
+                asyncio.events.set_event_loop(None)
+                loop.close()
