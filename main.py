@@ -1,4 +1,4 @@
-from koishi import ctx, Context, Session
+from koishi import ctx, Context, Session, h
 
 ctx.requires(
     "@koishijs/plugin-console",
@@ -15,7 +15,7 @@ ctx.requires(
 def test(x: Context, *_):
     def handle(session: Session, *args):
         if session.content == "天王盖地虎":
-            session.send("宝塔镇河妖")
+            session.send(["宝塔镇河妖", h.at(session.event.user.id, {"name": session.event.user.name})])
     x.on("message", handle)
 
 

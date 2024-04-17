@@ -2,9 +2,6 @@ import os
 import javascript
 from pathlib import Path
 
-from .models import Session as Session
-from .context import Context as Context
-
 _koishi = javascript.require("koishi")
 _Context = _koishi['Context']
 main_path = Path.cwd()
@@ -22,5 +19,10 @@ if package_src.exists() and not package_dst.exists():
     os.symlink(package_src.as_posix(), package_dst.as_posix())
 if package_lock_src.exists() and not package_lock_dst.exists():
     os.symlink(package_lock_src.as_posix(), package_lock_dst.as_posix())
+
+from .element import Element as Element
+from .element import h as h
+from .session import Session as Session
+from .context import Context as Context
 
 ctx = Context(_Context)

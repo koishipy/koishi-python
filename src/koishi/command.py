@@ -1,7 +1,7 @@
 from typing import Any, Callable, Optional, TypedDict, Awaitable, Union, overload
 from typing_extensions import Unpack
 
-from .models import Session
+from .session import Session
 
 
 class CommandBaseConfig(TypedDict, total=False):

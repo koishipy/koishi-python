@@ -129,21 +129,3 @@ class Event:
 
     _type: Optional[str] = None
     _data: Optional[dict] = None
-
-
-class Session:
-    id: int
-    event: Event
-    locales: List[str] = []
-    user: Optional[User] = None
-    channel: Optional[Channel] = None
-    guild: Optional[Guild] = None
-    permissions: List[str] = []
-    scope: Optional[str] = None
-    response: Optional[Any] = None
-
-    @property
-    def content(self) -> str:
-        return self.event.message.content  # type: ignore
-
-    def send(self, msg: str): ...
