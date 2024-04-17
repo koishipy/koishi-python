@@ -1,10 +1,9 @@
-from typing import Any, Final, Optional, overload, Union
+from typing import Any, Final, Optional, Union, overload
 from typing_extensions import TypeAlias
+
 import javascript
 
 _Element = javascript.require("@satorijs/core").Element
-print(_Element)
-print(_Element["at"]("123"))
 
 
 class Element:
@@ -30,13 +29,11 @@ class Element:
 
     @staticmethod
     @overload
-    def image(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def image(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     @overload
-    def image(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def image(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     def image(*args) -> "Element":
@@ -44,13 +41,11 @@ class Element:
 
     @staticmethod
     @overload
-    def img(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def img(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     @overload
-    def img(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def img(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     def img(*args) -> "Element":
@@ -58,13 +53,11 @@ class Element:
 
     @staticmethod
     @overload
-    def video(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def video(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     @overload
-    def video(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def video(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     def video(*args) -> "Element":
@@ -72,13 +65,11 @@ class Element:
 
     @staticmethod
     @overload
-    def audio(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def audio(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     @overload
-    def audio(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def audio(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     def audio(*args) -> "Element":
@@ -86,13 +77,11 @@ class Element:
 
     @staticmethod
     @overload
-    def file(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def file(data: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     @overload
-    def file(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element":
-        ...
+    def file(data: bytes, dtype: str, attrs: Optional[dict[str, Any]] = None, /) -> "Element": ...
 
     @staticmethod
     def file(*args) -> "Element":

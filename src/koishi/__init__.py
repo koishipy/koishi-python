@@ -1,9 +1,10 @@
 import os
-import javascript
 from pathlib import Path
 
+import javascript
+
 _koishi = javascript.require("koishi")
-_Context = _koishi['Context']
+_Context = _koishi["Context"]
 main_path = Path.cwd()
 js_path = Path(javascript.__file__)
 node_src = js_path.parent / "js" / "node_modules"
@@ -20,9 +21,9 @@ if package_src.exists() and not package_dst.exists():
 if package_lock_src.exists() and not package_lock_dst.exists():
     os.symlink(package_lock_src.as_posix(), package_lock_dst.as_posix())
 
+from .context import Context as Context
 from .element import Element as Element
 from .element import h as h
 from .session import Session as Session
-from .context import Context as Context
 
 ctx = Context(_Context)

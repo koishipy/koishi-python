@@ -20,3 +20,39 @@ build-backend = "pdm.backend"
 
 [tool.pdm]
 distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "isort>=5.13.2",
+    "black>=24.4.0",
+    "ruff>=0.3.7",
+]
+
+
+[tool.black]
+line-length = 110
+include = '\.pyi?$'
+extend-exclude = '''
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 110
+skip_gitignore = true
+extra_standard_library = ["typing_extensions"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py38"
+exclude = ["exam.py"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "UP", "C", "T", "Q"]
+ignore = ["E402", "F403", "F405", "C901", "UP037"]
+
+[tool.pyright]
+pythonPlatform = "All"
+pythonVersion = "3.9"
+typeCheckingMode = "standard"
+reportShadowedImports = false
+disableBytesTypePromotions = true

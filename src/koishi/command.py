@@ -1,4 +1,4 @@
-from typing import Any, Callable, Optional, TypedDict, Awaitable, Union, overload
+from typing import Any, Awaitable, Callable, Optional, TypedDict, Union, overload
 from typing_extensions import Unpack
 
 from .session import Session
@@ -63,7 +63,9 @@ class Argv(TypedDict, total=False):
 
 class Command:
     def option(self, name: str, desc: str, config: Optional[OptionConfig] = None, /) -> "Command": ...
-    def action(self, callback: Callable[["Command", Argv, Unpack[tuple]], Any], prepend: bool = False) -> "Command": ...
+    def action(
+        self, callback: Callable[["Command", Argv, Unpack[tuple]], Any], prepend: bool = False
+    ) -> "Command": ...
     @overload
     def alias(self, *names: str) -> "Command": ...
     @overload

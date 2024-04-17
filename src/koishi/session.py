@@ -1,14 +1,15 @@
 from collections.abc import Callable
-from typing import Any, List, Optional, TypedDict, TYPE_CHECKING, Union, Iterable, Literal, TypeVar
+from typing import TYPE_CHECKING, Any, Iterable, List, Literal, Optional, TypedDict, TypeVar, Union
 from typing_extensions import overload
 
-from .models import Event, User, Channel, Guild, Member
 from .element import Fragment
+from .models import Channel, Event, Guild, Member, User
 
 if TYPE_CHECKING:
     from .context import Context
 
 T = TypeVar("T")
+
 
 class Stripped(TypedDict):
     content: str
@@ -53,7 +54,7 @@ class Session:
 
     @property
     def isDirect(self) -> bool:
-        return self.channel and self.channel.type == 'private'  # type: ignore
+        return self.channel and self.channel.type == "private"  # type: ignore
 
     @property
     def author(self) -> Union[User, Member]:
@@ -115,7 +116,9 @@ class Session:
 
     def text(self, path: Union[str, list[str]], params: Optional[dict[str, Any]] = None, /) -> str: ...
 
-    def i18n(self, path: Union[str, list[str]], params: Optional[dict[str, Any]] = None, /) -> list[Fragment]: ...
+    def i18n(
+        self, path: Union[str, list[str]], params: Optional[dict[str, Any]] = None, /
+    ) -> list[Fragment]: ...
 
     def execute(self, content: str, next: Union[Literal[True], Callable[..., Any]], /): ...
 

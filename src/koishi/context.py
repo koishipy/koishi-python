@@ -1,11 +1,11 @@
 import asyncio
-from typing import TypedDict, overload, Protocol, Optional, Union, TypeVar, Callable, Any, Literal
-
-from loguru import logger
+from typing import Any, Callable, Literal, Optional, Protocol, TypedDict, TypeVar, Union, overload
 from typing_extensions import TypeAlias
-from .command import Command, CommandConfig
 
 import javascript
+from loguru import logger
+
+from .command import Command, CommandConfig
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -70,7 +70,7 @@ PluginType: TypeAlias = Union[
     PluginFunction["Context", None],
     PluginInit["Context", None],
     PluginObject["Context", None],
-    PluginDictObject
+    PluginDictObject,
 ]
 
 
@@ -109,12 +109,12 @@ class Context:
             self._obj.plugin(plugin, config)
 
     @overload
-    def on(self, name: str, callback: Callable[..., Any], prepend: bool = False) -> Callable[..., bool]:
-        ...
+    def on(self, name: str, callback: Callable[..., Any], prepend: bool = False) -> Callable[..., bool]: ...
 
     @overload
-    def on(self, name: str, *, prepend: bool = False) -> Callable[[Callable[..., Any]], Callable[..., bool]]:
-        ...
+    def on(
+        self, name: str, *, prepend: bool = False
+    ) -> Callable[[Callable[..., Any]], Callable[..., bool]]: ...
 
     def on(self, name: str, callback: Optional[Callable[..., Any]] = None, prepend: Optional[bool] = None):
         if callback:
@@ -176,11 +176,13 @@ class Context:
                     if task.cancelled():
                         continue
                     if task.exception() is not None:
-                        loop.call_exception_handler({
-                            'message': 'unhandled exception during asyncio.run() shutdown',
-                            'exception': task.exception(),
-                            'task': task,
-                        })
+                        loop.call_exception_handler(
+                            {
+                                "message": "unhandled exception during asyncio.run() shutdown",
+                                "exception": task.exception(),
+                                "task": task,
+                            }
+                        )
                 loop.run_until_complete(loop.shutdown_asyncgens())
                 loop.run_until_complete(loop.shutdown_default_executor())
             finally:
