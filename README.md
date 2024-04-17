@@ -11,7 +11,9 @@ pip install "koishi-python @ git+https://github.com/koishipy/koishi-python"
 ## 使用
 
 ```python
-from koishi import ctx
+from koishi import Context
+
+ctx = Context({})
 
 ctx.requires(
     "@koishijs/plugin-console",

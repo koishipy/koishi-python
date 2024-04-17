@@ -26,4 +26,4 @@ from .element import Element as Element
 from .element import h as h
 from .session import Session as Session
 
-ctx = Context(_Context)
+Context.__context_type__ = _Context

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from enum import IntEnum
-from typing import Any, List, Optional
+from typing import Any, Generic, List, Optional, TypeVar
 
 
 class ChannelType(IntEnum):
@@ -16,7 +16,7 @@ class Channel:
     id: str
     type: ChannelType
     name: Optional[str] = None
-    parent_id: Optional[str] = None
+    parentId: Optional[str] = None
 
 
 @dataclass
@@ -32,7 +32,7 @@ class User:
     name: Optional[str] = None
     nick: Optional[str] = None
     avatar: Optional[str] = None
-    is_bot: Optional[bool] = None
+    isBot: Optional[bool] = None
 
 
 @dataclass
@@ -41,7 +41,7 @@ class Member:
     nick: Optional[str] = None
     name: Optional[str] = None
     avatar: Optional[str] = None
-    joined_at: Optional[int] = None
+    joinedAt: Optional[int] = None
 
 
 @dataclass
@@ -62,8 +62,9 @@ class LoginStatus(IntEnum):
 class Login:
     status: LoginStatus
     user: Optional[User] = None
-    self_id: Optional[str] = None
+    selfId: Optional[str] = None
     platform: Optional[str] = None
+    hidden: Optional[bool] = None
 
 
 @dataclass
@@ -105,8 +106,8 @@ class MessageObject:
     guild: Optional[Guild] = None
     member: Optional[Member] = None
     user: Optional[User] = None
-    created_at: Optional[int] = None
-    updated_at: Optional[int] = None
+    createdAt: Optional[int] = None
+    updatedAt: Optional[int] = None
 
 
 @dataclass
@@ -114,7 +115,7 @@ class Event:
     id: int
     type: str
     platform: str
-    self_id: str
+    selfId: str
     timestamp: datetime
     argv: Optional[ArgvInteraction] = None
     button: Optional[ButtonInteraction] = None
@@ -129,3 +130,12 @@ class Event:
 
     _type: Optional[str] = None
     _data: Optional[dict] = None
+
+
+T = TypeVar("T")
+
+
+@dataclass
+class PageResult(Generic[T]):
+    data: List[T]
+    next: Optional[str] = None

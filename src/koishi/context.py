@@ -1,10 +1,11 @@
 import asyncio
-from typing import Any, Callable, Literal, Optional, Protocol, TypedDict, TypeVar, Union, overload
+from typing import Any, Callable, ClassVar, Literal, Optional, Protocol, TypedDict, TypeVar, Union, overload
 from typing_extensions import TypeAlias
 
 import javascript
 from loguru import logger
 
+from .bot import Bot
 from .command import Command, CommandConfig
 
 T = TypeVar("T")
@@ -75,8 +76,10 @@ PluginType: TypeAlias = Union[
 
 
 class Context:
-    def __init__(self, ctx_obj: javascript.proxy.Proxy):
-        self._obj = ctx_obj()
+    __context_type__: ClassVar[javascript.proxy.Proxy]
+
+    def __init__(self, config: Any):
+        self._obj = self.__class__.__context_type__(config)
 
     @property
     def root(self):
@@ -87,6 +90,10 @@ class Context:
     @property
     def config(self):
         return self._obj.config
+
+    @property
+    def bots(self) -> dict[Union[int, str], Bot[Any]]:
+        return self._obj.bots
 
     def inject(self, deps: Union[list[str], Inject], callback: PluginFunction["Context", None]):
         self._obj.inject(deps, callback)
